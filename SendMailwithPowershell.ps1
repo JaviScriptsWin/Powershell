@@ -1,15 +1,15 @@
 # 12/2025 Script powershell para mandar correo empleando la cuenta de Gmail
 
-$CredUser = "tudirecciongmail@gmail.com"
-$CredPassword = " Te la facilita Gmail en: ‘Contraseñas de aplicación’ de tu Cuenta de correo"
-$EmailFrom = " tudirecciongmail@gmail.com"
-$EmailTo = " tudirecciongmail@gmail.com"
-$Subject = "Asunto del mensaje desde: $env:computername "
-$Body = "Mensaje de prueba desde $env:computername usuario: $env:username"
-$SMTPServer = "smtp.gmail.com"
-$SMTPClient = New-Object Net.Mail.SmtpClient($SmtpServer, 587)
-$SMTPClient.EnableSsl = $true
-$SMTPClient.Credentials = New-Object System.Net.NetworkCredential($CredUser, $CredPassword)
+$CredUser       = "tudirecciongmail@gmail.com"
+$CredPassword   = " Te la facilita Gmail en: ‘Contraseñas de aplicación’ de tu Cuenta de correo"
+$EmailFrom      = " tudirecciongmail@gmail.com"
+$EmailTo        = " tudirecciongmail@gmail.com"
+$Subject        = "Asunto del mensaje desde: $env:computername "
+$Body           = "Mensaje de prueba desde $env:computername usuario: $env:username"
+$SMTPServer     = "smtp.gmail.com"
+$SMTPClient     = New-Object Net.Mail.SmtpClient($SmtpServer, 587)
+$SMTPClient.EnableSsl     = $true
+$SMTPClient.Credentials   = New-Object System.Net.NetworkCredential($CredUser, $CredPassword)
 $SMTPClient.Send ($EmailFrom, $EmailTo, $Subject, $Body)
 
 
