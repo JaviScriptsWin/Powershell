@@ -1,4 +1,4 @@
-# Lista de tareas crí­ticas que NO deben ser eliminadas
+# Lista de tareas crÃ­Â­ticas que NO deben ser eliminadas
 $criticalTasks = @(
     "*Windows*",        # Tareas de Windows
     "*Update*",         # Tareas de actualizaciones
@@ -12,9 +12,10 @@ $criticalTasks = @(
 
 # Lista de patrones de nombres de tareas que se van a deshabilitar
 $Disable_Tasks = @(
-    "*Google*",   # Navegador Google Chrome
-    "*Edge*",     # Navegador Edge
-    "*onedrive*"    # OneDrive
+    "*Google*",          # Navegador Google Chrome
+    "*Edge*",            # Navegador Edge
+    "*onedrive*"         # OneDrive
+    "*Adobe Acrobat*" 
 )
 
 # Obtener todas las tareas programadas del sistema
@@ -43,7 +44,7 @@ foreach ($task in $Tasks) {
                 $Tareas_NoDeshabilitadas++
                 $NotDisabledTasks += $taskName
             }
-            break # Sale del bucle de patrones si ya deshabilitó la tarea
+            break # Sale del bucle de patrones si ya deshabilitÃ³ la tarea
         }
     }
 }
@@ -52,37 +53,37 @@ foreach ($task in $tasks) {
     $taskName = $task.TaskName
     $shouldDelete = $true
 
-    # Verificar si el identificador de seguridad está modificado
+    # Verificar si el identificador de seguridad estÃ¡ modificado
     try {
         $securityDescriptor = (Get-ScheduledTask -TaskName $taskName).SecurityDescriptor
         if ($securityDescriptor) {
-            Write-Host "La tarea: $taskName tiene un identificador de Seguridad modificado. Posible ocultación."
+            Write-Host "La tarea: $taskName tiene un identificador de Seguridad modificado. Posible ocultaciÃ³n."
         }
     } catch {
-        Write-Warning "No se pudo acceder al identificador de seguridad de la tarea: $taskName. Posible modificación maliciosa."
+        Write-Warning "No se pudo acceder al identificador de seguridad de la tarea: $taskName. Posible modificaciÃ³n maliciosa."
         # Si no se puede acceder al identificador, podemos marcarla como sospechosa
     }
 
-    # Comparar el nombre de la tarea con las crí­ticas
+    # Comparar el nombre de la tarea con las crÃ­Â­ticas
     foreach ($pattern in $criticalTasks) {
         if ($taskName -like $pattern) {
-            Write-Host "Tarea crí­tica detectada: $taskName. No será eliminada."
+            Write-Host "Tarea crÃ­Â­tica detectada: $taskName. No serÃ¡ eliminada."
             $shouldDelete = $false
             $Tareas_Cri_NoBorradas=$Tareas_Cri_NoBorradas+1
             break
         }
     }
 
-    # Eliminar tarea si no está en la lista crí­tica
+    # Eliminar tarea si no estÃ¡ en la lista crÃ­Â­tica
     if ($shouldDelete) {
         try {
-           Unregister-ScheduledTask -TaskName $taskName -Confirm:$false   # ¡¡Borra la tarea !!
+           Unregister-ScheduledTask -TaskName $taskName -Confirm:$false   # Â¡Â¡Borra la tarea !!
          
            $Tareas_Borradas =$Tareas_Borradas +1
            #write-warning ">> ELIMINADAS: $Tareas_Borradas  TAREAS"
            Write-Host "-> Tarea eliminada: $taskName"
         } catch {
-            Write-Warning "No se pudo eliminar la tarea: $taskName. Posible manipulación."
+            Write-Warning "No se pudo eliminar la tarea: $taskName. Posible manipulaciÃ³n."
             $Tareas_NoBorradas =$Tareas_NoBorradas +1
             $deletedTasks += $taskName
         }
@@ -94,7 +95,7 @@ $deletedTasks | Export-Csv -Path "C:\TareasEliminadas.csv" -NoTypeInformation
 $NotDisabledTasks  | Export-Csv -Path "C:\TareasDeshabilitadas.csv" -NoTypeInformation
 write-warning ">> Tareas ELIMINADAS: $Tareas_Borradas  TAREAS"
 write-warning ">> Tareas Criticas no eliminadas: $Tareas_Cri_NoBorradas  TAREAS"
-write-warning ">> Tareas no borradas por posible manipulación: $Tareas_NoBorradas  TAREAS"
+write-warning ">> Tareas no borradas por posible manipulaciÃ³n: $Tareas_NoBorradas  TAREAS"
 write-warning ">> Tareas deshabilitadas por cargar el sistema: $Tareas_Deshabilitadas  TAREAS"
 
 Start-Sleep -Seconds 3
