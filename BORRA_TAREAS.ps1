@@ -1,3 +1,7 @@
+#Úsalos bajo tu propia responsabilidad
+# ELIMINA  tareas programas consideradas no críticas.
+#El objetivo es ahorrar tiempo y/o aligerar Windows eliminando tareas que se iniciar al arrancar Windows y lo ralentizan consumiendo memoria y CPU.
+# Algunas tareas vuelven a aparecer despues de actualizar programas o el sistema operativo.
 # Lista de tareas crí­ticas que NO deben ser eliminadas
 $criticalTasks = @(
     "*Windows*",        # Tareas de Windows
@@ -103,3 +107,4 @@ Start-Sleep -Seconds 3
 # Backup de las tareas programadas 
 # Entorno de pruebas para las tareas programadas
 # Obtenido de github
+
